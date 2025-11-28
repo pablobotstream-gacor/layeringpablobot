@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>XAU Layer Simulator (v7.0 Floating & Price Manual)</title>
+
   <style>
     :root{
       --bg:#0f1724;
@@ -39,6 +40,7 @@
     }
     h1{margin:0 0 10px;font-size:20px;text-align:center}
     .muted{color:var(--muted);font-size:13px;text-align:center}
+
     .row{
       display:flex;
       justify-content:center;
@@ -111,11 +113,12 @@
     .profit{color:#22c55e;font-weight:600;}
   </style>
 </head>
+
 <body>
   <div class="container">
     <div class="card">
       <h1>XAU Layer Simulator (v7.0 Floating & Price Manual)</h1>
-      <div class="muted">Simulasikan layering otomatis BUY/SELL dengan modal per layer & perhitungan floating real-time berdasarkan harga manual</div>
+      <div class="muted">Simulasikan layering otomatis BUY/SELL dengan modal per layer & floating real-time berdasarkan harga manual</div>
 
       <div class="row">
         <div class="half">
@@ -164,8 +167,10 @@
         </div>
       </div>
 
+      <!-- BUTTONS -->
       <div class="row" style="margin-top:8px;">
         <button id="calc">Hitung Otomatis</button>
+        <button id="reset" style="background:#475569;color:white;">Reset</button>
       </div>
 
       <table id="table" style="display:none">
@@ -205,8 +210,8 @@
       el('table').style.display = '';
 
       let totalLot = 0, weightedSum = 0, totalFloating = 0;
-
       const entries = [];
+
       for(let i=0;i<activeLayers;i++){
         const entry = dir==='buy' ? basePrice - (step*i) : basePrice + (step*i);
         entries.push(entry);
@@ -279,8 +284,27 @@
       `;
     }
 
+    /* ===========================
+       RESET BUTTON (Final)
+       =========================== */
+    el('reset').addEventListener('click', () => {
+      el('perLayer').value = 100;
+      el('basePrice').value = 4121;
+      el('currentPrice').value = 4121;
+      el('step').value = 50;
+      el('lot').value = 0.01;
+      el('direction').value = "buy";
+      el('activeLayers').value = 3;
+
+      // ❗ Kurs tidak ikut direset
+      // el('usdToIdr').value = 16000;
+
+      compute();
+    });
+
     el('calc').addEventListener('click', compute);
     el('currentPrice').addEventListener('input', compute);
+
     compute();
   </script>
 </body>
